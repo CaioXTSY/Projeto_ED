@@ -12,6 +12,10 @@ class DoubleLinkedList:
         self.tail = None
 
     def add_node(self, name, day, month):
+        if not self.validate_date(day, month):
+            print("Data inválida. Tente novamente.")
+            return
+
         new_node = Node(name, day, month)
 
         if self.head is None:
@@ -21,6 +25,28 @@ class DoubleLinkedList:
             self.tail.next = new_node
             new_node.prev = self.tail
             self.tail = new_node
+
+    def validate_date(self, day, month):
+        if month < 1 or month > 12:
+            return False
+
+        if day < 1 or day > 31:
+            return False
+
+        if month in [4, 6, 9, 11] and day > 30:
+            return False
+
+        if month == 2:
+            if day > 29:
+                return False
+            elif day == 29 and not self.is_leap_year():
+                return False
+
+        return True
+
+    def is_leap_year(self):
+        year = datetime.datetime.now().year
+        return (year % 4 == 0 and year % 100 != 0) or year % 400 == 0
 
     def remove_node(self, name):
         current_node = self.head
