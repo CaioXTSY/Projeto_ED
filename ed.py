@@ -1,5 +1,8 @@
 import datetime
 import os
+import platform
+import subprocess
+import time
 
 FILENAME = "aniversariantes.txt"
 
@@ -127,6 +130,7 @@ class DoubleLinkedList:
             print("-"*50)
         else:
             print("Não há aniversariantes na lista.")
+        time.sleep(2)
 
     def list_all(self):
         current_node = self.head
@@ -148,6 +152,7 @@ class DoubleLinkedList:
         for date in sorted_dates:
             print(f"{date[0]}: {date[1]}/{date[2]}")
             print("-"*50)
+        time.sleep(2)
     
     def edit_node(self, name, new_name, new_day, new_month):
         if not self.validate_date(new_day, new_month):
@@ -170,6 +175,12 @@ class DoubleLinkedList:
             current_node = current_node.next
         print(f"Aniversariante {name} não encontrado.")
 
+def clear_console():
+    if platform.system().lower() == "windows":
+        subprocess.call("cls", shell=True)
+    else:
+        subprocess.call("clear", shell=True)
+
 def menu():
     print("\n")
     print("=" * 50)
@@ -187,35 +198,51 @@ def menu():
     print("=" * 50)
 
 def main():
+    clear_console()
     double_linked_list = DoubleLinkedList()
     double_linked_list.load_from_file()
     while True:
         menu()
         option = input("Escolha uma opção: ")
-        if option == "1":
-            name = input("Nome: ")
-            day = int(input("Dia: "))
-            month = int(input("Mês: "))
-            double_linked_list.add_node(name, day, month)
-        elif option == "2":
-            name = input("Nome: ")
-            double_linked_list.remove_node(name)
-        elif option == "3":
-            double_linked_list.list_all()
-        elif option == "4":
-            double_linked_list.list_birthday()
-        elif option == "5":
-            name = input("Nome: ")
-            new_name = input("Novo nome: ")
-            new_day = int(input("Novo dia: "))
-            new_month = int(input("Novo mês: "))
-            double_linked_list.edit_node(name, new_name, new_day, new_month)
-        elif option == "6":
-            double_linked_list.next_birthday()
-        elif option == "7":
-            double_linked_list.save_to_file()
-            break
-        else:
-            print("Opção inválida. Tente novamente.")
+        try:
+            if option == "1":
+                name = input("Nome: ")
+                try:
+                    day = int(input("Dia: "))
+                    month = int(input("Mês: "))
+                except ValueError:
+                    print("Dia e mês devem ser números. Tente novamente.")
+                    time.sleep(2)
+                    continue
+                double_linked_list.add_node(name, day, month)
+            elif option == "2":
+                name = input("Nome: ")
+                double_linked_list.remove_node(name)
+            elif option == "3":
+                double_linked_list.list_all()
+            elif option == "4":
+                double_linked_list.list_birthday()
+            elif option == "5":
+                name = input("Nome: ")
+                new_name = input("Novo nome: ")
+                try:
+                    new_day = int(input("Novo dia: "))
+                    new_month = int(input("Novo mês: "))
+                except ValueError:
+                    print("Novo dia e novo mês devem ser números. Tente novamente.")
+                    time.sleep(2)
+                    continue
+                double_linked_list.edit_node(name, new_name, new_day, new_month)
+            elif option == "6":
+                double_linked_list.next_birthday()
+            elif option == "7":
+                double_linked_list.save_to_file()
+                break
+            else:
+                print("Opção inválida. Tente novamente.")
+                time.sleep(2)
+        except Exception as e:
+            print(f"Ocorreu um erro inesperado: {e}")
+            time.sleep(2)
 
 main()
