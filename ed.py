@@ -85,36 +85,47 @@ class DoubleLinkedList:
             print(f"Name: {current_node.name}, Aniversario: {current_node.day}/{current_node.month}")
             current_node = current_node.next
 
+    def list_birthday(self):
+        dates = []
+        current_node = self.head
+        while current_node is not None:
+            dates.append((current_node.name, current_node.day, current_node.month))
+            current_node = current_node.next
+        sorted_dates = sorted(dates, key=lambda x: (x[2], x[1]))
+        print ("-"*50)	
+        print("Datas de aniversário ordenadas:")
+        for date in sorted_dates:
+            print(f"{date[0]}: {date[1]}/{date[2]}")
+            print("-"*50)
+
 def menu():
-    print("\nMenu:")
-    print("1. Adicionar pessoa")
-    print("2. Remover pessoa")
-    print("3. Listar todas as pessoas")
-    print("4. Sair")
-    choice = int(input("Selecione uma opção: "))
-    return choice
+    print("1 - Adicionar")
+    print("2 - Remover")
+    print("3 - Listar todos")
+    print("4 - Listar ordenadamente")
+    print("5 - Sair")
 
 def main():
-    dll = DoubleLinkedList()
+    double_linked_list = DoubleLinkedList()
     while True:
-        choice = menu()
-
-        if choice == 1:
-            name = input("Digite o nome da pessoa: ")
-            day = int(input("Digite o dia do aniversário: "))
-            month = int(input("Digite o mês do aniversário: "))
-            dll.add_node(name, day, month)
-        elif choice == 2:
-            name = input("Digite o nome da pessoa que deseja remover: ")
-            dll.remove_node(name)
-        elif choice == 3:
-            print("Listando todas as pessoas:")
-            dll.list_all()
-        elif choice == 4:
-            print("Saindo...")
+        menu()
+        option = int(input("Digite uma opção: "))
+        if option == 1:
+            name = input("Digite o nome: ")
+            day = int(input("Digite o dia: "))
+            month = int(input("Digite o mês: "))
+            double_linked_list.add_node(name, day, month)
+        elif option == 2:
+            name = input("Digite o nome: ")
+            double_linked_list.remove_node(name)
+        elif option == 3:
+            double_linked_list.list_all()
+        elif option == 4:
+            double_linked_list.list_birthday()
+        elif option == 5:
             break
         else:
-            print("Opção inválida. Por favor, tente novamente.")
+            print("Opção inválida. Tente novamente.")
 
 if __name__ == "__main__":
     main()
