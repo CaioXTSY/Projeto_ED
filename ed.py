@@ -1,4 +1,7 @@
 import datetime
+import os
+
+FILENAME = "aniversariantes.txt"
 
 class Node:
     def __init__(self, name, day, month):
@@ -39,6 +42,24 @@ class DoubleLinkedList:
                 return True
             current_node = current_node.next
         return False
+    
+    def save_to_file(self):
+        with open(FILENAME, 'w') as file:
+            current_node = self.head
+            while current_node is not None:
+                file.write(f"{current_node.name},{current_node.day},{current_node.month}\n")
+                current_node = current_node.next
+        print("Aniversariantes salvos com sucesso!")
+
+    def load_from_file(self):
+        if not os.path.exists(FILENAME):
+            return
+
+        with open(FILENAME, 'r') as file:
+            for line in file:
+                name, day, month = line.strip().split(',')
+                self.add_node(name, int(day), int(month))
+        print("Aniversariantes carregados com sucesso!")
 
     def validate_date(self, day, month):
         if month < 1 or month > 12:
@@ -150,18 +171,24 @@ class DoubleLinkedList:
         print(f"Aniversariante {name} não encontrado.")
 
 def menu():
-    print("-"*50)
-    print("1. Adicionar aniversariante")
-    print("2. Remover aniversariante")
-    print("3. Listar aniversariantes")
-    print("4. Listar aniversariantes por data")
-    print("5. Editar aniversariante")
-    print("6. Aniversariante mais próximo")
-    print("7. Sair")
-    print("-"*50)
+    print("\n")
+    print("=" * 50)
+    print(" " * 14 + "Menu de Aniversariantes")
+    print("=" * 50)
+    print("\n")
+    print(" " * 14 + "[1] Adicionar aniversariante")
+    print(" " * 14 + "[2] Remover aniversariante")
+    print(" " * 14 + "[3] Listar aniversariantes")
+    print(" " * 14 + "[4] Listar aniversariantes por data")
+    print(" " * 14 + "[5] Editar aniversariante")
+    print(" " * 14 + "[6] Aniversariante mais próximo")
+    print(" " * 14 + "[7] Sair")
+    print("\n")
+    print("=" * 50)
 
 def main():
     double_linked_list = DoubleLinkedList()
+    double_linked_list.load_from_file()
     while True:
         menu()
         option = input("Escolha uma opção: ")
@@ -186,6 +213,7 @@ def main():
         elif option == "6":
             double_linked_list.next_birthday()
         elif option == "7":
+            double_linked_list.save_to_file()
             break
         else:
             print("Opção inválida. Tente novamente.")
