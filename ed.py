@@ -18,6 +18,10 @@ class DoubleLinkedList:
             print("Data inválida. Tente novamente.")
             return
 
+        if self.node_exists(name, day, month):
+            print("Aniversariante com mesmo nome e data já existe. Tente novamente.")
+            return
+
         new_node = Node(name, day, month)
 
         if self.head is None:
@@ -27,6 +31,14 @@ class DoubleLinkedList:
             self.tail.next = new_node
             new_node.prev = self.tail
             self.tail = new_node
+    
+    def node_exists(self, name, day, month):
+        current_node = self.head
+        while current_node is not None:
+            if current_node.name == name and current_node.day == day and current_node.month == month:
+                return True
+            current_node = current_node.next
+        return False
 
     def validate_date(self, day, month):
         if month < 1 or month > 12:
@@ -120,6 +132,11 @@ class DoubleLinkedList:
         if not self.validate_date(new_day, new_month):
             print("Data inválida. Tente novamente.")
             return
+
+        if name != new_name or new_day != new_day or new_month != new_month:
+            if self.node_exists(new_name, new_day, new_month):
+                print("Já existe um aniversariante com o mesmo nome e data. Tente novamente.")
+                return
 
         current_node = self.head
         while current_node is not None:
