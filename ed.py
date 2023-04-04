@@ -3,8 +3,9 @@ import os
 import platform
 import subprocess
 import time
+import json
 
-FILENAME = "aniversariantes.txt"
+FILENAME = "aniversariantes.json"
 
 class Node:
     def __init__(self, name, day, month):
@@ -20,6 +21,7 @@ class DoubleLinkedList:
         self.tail = None
 
     def add_node(self, name, day, month):
+        name = name.upper()
         if not self.validate_date(day, month):
             print("Data inválida. Tente novamente.")
             return
@@ -46,12 +48,29 @@ class DoubleLinkedList:
             current_node = current_node.next
         return False
     
+    def search_node(self, name):
+        name = name.upper()
+        current_node = self.head
+        while current_node is not None:
+            if current_node.name == name:
+                print(f"Aniversariante encontrado: {current_node.name}, Aniversário: {current_node.day}/{current_node.month}")
+                return
+            current_node = current_node.next
+        print(f"Aniversariante {name} não encontrado.")
+    
     def save_to_file(self):
+        data = []
+        current_node = self.head
+        while current_node is not None:
+            data.append({
+                "name": current_node.name,
+                "day": current_node.day,
+                "month": current_node.month
+            })
+            current_node = current_node.next
+
         with open(FILENAME, 'w') as file:
-            current_node = self.head
-            while current_node is not None:
-                file.write(f"{current_node.name},{current_node.day},{current_node.month}\n")
-                current_node = current_node.next
+            json.dump(data, file)
         print("Aniversariantes salvos com sucesso!")
 
     def load_from_file(self):
@@ -59,9 +78,9 @@ class DoubleLinkedList:
             return
 
         with open(FILENAME, 'r') as file:
-            for line in file:
-                name, day, month = line.strip().split(',')
-                self.add_node(name, int(day), int(month))
+            data = json.load(file)
+            for item in data:
+                self.add_node(item["name"], item["day"], item["month"])
         print("Aniversariantes carregados com sucesso!")
 
     def validate_date(self, day, month):
@@ -193,7 +212,8 @@ def menu():
     print(" " * 14 + "[4] Listar aniversariantes por data")
     print(" " * 14 + "[5] Editar aniversariante")
     print(" " * 14 + "[6] Aniversariante mais próximo")
-    print(" " * 14 + "[7] Sair")
+    print(" " * 14 + "[7] Buscar aniversariante por nome")
+    print(" " * 14 + "[8] Sair")
     print("\n")
     print("=" * 50)
 
@@ -236,6 +256,9 @@ def main():
             elif option == "6":
                 double_linked_list.next_birthday()
             elif option == "7":
+                name = input("Nome: ")
+                double_linked_list.search_node(name)
+            elif option == "8":
                 double_linked_list.save_to_file()
                 break
             else:
