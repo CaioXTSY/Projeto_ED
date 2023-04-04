@@ -1,0 +1,23 @@
+[    
+    {"name": "CAIO", "day": 17, "month": 1},    
+    {"name": "Lucas", "day": 5, "month": 10},    
+    {"name": "Maria", "day": 10, "month": 2},    
+    {"name": "João", "day": 25, "month": 4},    
+    {"name": "Ana", "day": 8, "month": 6},    
+    {"name": "Pedro", "day": 14, "month": 12},    
+    {"name": "Mariana", "day": 1, "month": 9},    
+    {"name": "Gabriel", "day": 7, "month": 11},    
+    {"name": "Carla", "day": 23, "month": 7},    
+    {"name": "Bruno", "day": 3, "month": 8},    
+    {"name": "Fernanda", "day": 19, "month": 3},    
+    {"name": "Rafael", "day": 21, "month": 5},    
+    {"name": "Camila", "day": 13, "month": 1},    
+    {"name": "Diego", "day": 18, "month": 10},    
+    {"name": "Bianca", "day": 2, "month": 11},    
+    {"name": "Júlia", "day": 29, "month": 9},    
+    {"name": "Ricardo", "day": 16, "month": 2},    
+    {"name": "Natália", "day": 12, "month": 7},    
+    {"name": "Thiago", "day": 28, "month": 8},    
+    {"name": "Renata", "day": 11, "month": 12},    
+    {"name": "Vinícius", "day": 6, "month": 4}
+]
